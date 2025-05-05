@@ -1,6 +1,5 @@
 package com.example.petproject.dto;
 
-import com.example.petproject.model.Furnace;
 import com.example.petproject.model.Material;
 import java.util.List;
 import lombok.AllArgsConstructor;

@@ -8,7 +8,6 @@ import com.example.petproject.repository.MaterialRepository;
 import com.example.petproject.utils.BadRequestException;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,7 @@ public class MaterialService {
         logger.info("Finding all materials");
         return materialRepository.findAll().stream()
                 .map(MaterialMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public MaterialDto getMaterialById(Long id) {
@@ -52,7 +51,7 @@ public class MaterialService {
         List<Material> materials = cache.get(type);
         if (materials != null) {
             logger.info("Found cached materials");
-            return materials.stream().map(MaterialDto::new).collect(Collectors.toList());
+            return materials.stream().map(MaterialDto::new).toList();
         }
 
         materials = materialRepository.findByFurnaceType(type);
@@ -66,7 +65,7 @@ public class MaterialService {
         cache.put(type, materials);
 
         logger.info("Found materials from database, saved in cache");
-        return materials.stream().map(MaterialDto::new).collect(Collectors.toList());
+        return materials.stream().map(MaterialDto::new).toList();
     }
 
     public MaterialDto createMaterial(MaterialDto materialDto) {

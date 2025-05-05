@@ -9,13 +9,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
 @Table(name = "material")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Material {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +37,4 @@ public class Material {
     @ManyToMany(mappedBy = "materialIds")
     @JsonIgnore
     private List<Furnace> furnaces;
-
-    public Material() {}
 }

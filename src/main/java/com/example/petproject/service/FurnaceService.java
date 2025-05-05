@@ -8,7 +8,6 @@ import com.example.petproject.repository.FurnaceRepository;
 import com.example.petproject.repository.ProjectRepository;
 import com.example.petproject.utils.BadRequestException;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class FurnaceService {
     public List<FurnaceDto> getAllFurnaces() {
         return furnaceRepository.findAll().stream()
                 .map(FurnaceMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public FurnaceDto getFurnaceById(Long id) {

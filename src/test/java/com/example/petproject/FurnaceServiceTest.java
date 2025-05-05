@@ -36,7 +36,7 @@ public class FurnaceServiceTest {
     private FurnaceService furnaceService;
 
     @Test
-    public void testGetAllFurnaces() {
+    void testGetAllFurnaces() {
         Furnace furnace = new Furnace();
         furnace.setId(1L);
         furnace.setType("TestType");
@@ -57,13 +57,13 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testGetFurnaceById_NullId() {
+    void testGetFurnaceById_NullId() {
         Exception exception = assertThrows(BadRequestException.class, () -> furnaceService.getFurnaceById(null));
         assertEquals("Furnace id must not be null", exception.getMessage());
     }
 
     @Test
-    public void testGetFurnaceById_NotFound() {
+    void testGetFurnaceById_NotFound() {
         Long id = 1L;
         when(furnaceRepository.findById(id)).thenReturn(Optional.empty());
         Exception exception = assertThrows(RuntimeException.class, () -> furnaceService.getFurnaceById(id));
@@ -71,7 +71,7 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testGetFurnaceById_Success() {
+    void testGetFurnaceById_Success() {
         Long id = 1L;
         Furnace furnace = new Furnace();
         furnace.setId(id);
@@ -93,13 +93,13 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testCreateFurnace_NullDto() {
+    void testCreateFurnace_NullDto() {
         Exception exception = assertThrows(BadRequestException.class, () -> furnaceService.createFurnace(null));
         assertEquals("Furnace data must not be null", exception.getMessage());
     }
 
     @Test
-    public void testCreateFurnace_EmptyType() {
+    void testCreateFurnace_EmptyType() {
         FurnaceDto dto = new FurnaceDto();
         dto.setType("");
         Exception exception = assertThrows(BadRequestException.class, () -> furnaceService.createFurnace(dto));
@@ -107,7 +107,7 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testCreateFurnace_Success() {
+    void testCreateFurnace_Success() {
         FurnaceDto inputDto = new FurnaceDto();
         inputDto.setType("Type1");
 
@@ -137,7 +137,7 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testUpdateFurnace_NullId() {
+    void testUpdateFurnace_NullId() {
         FurnaceDto dto = new FurnaceDto();
         dto.setType("Type1");
         Exception exception = assertThrows(BadRequestException.class, () -> furnaceService.updateFurnace(null, dto));
@@ -145,13 +145,13 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testUpdateFurnace_NullDto() {
+    void testUpdateFurnace_NullDto() {
         Exception exception = assertThrows(BadRequestException.class, () -> furnaceService.updateFurnace(1L, null));
         assertEquals("Furnace data must not be null", exception.getMessage());
     }
 
     @Test
-    public void testUpdateFurnace_EmptyType() {
+    void testUpdateFurnace_EmptyType() {
         FurnaceDto dto = new FurnaceDto();
         dto.setType("");
         Exception exception = assertThrows(BadRequestException.class, () -> furnaceService.updateFurnace(1L, dto));
@@ -159,7 +159,7 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testUpdateFurnace_NotFound() {
+    void testUpdateFurnace_NotFound() {
         FurnaceDto dto = new FurnaceDto();
         dto.setType("Type1");
 
@@ -170,7 +170,7 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testUpdateFurnace_UpdateWithoutProject() {
+    void testUpdateFurnace_UpdateWithoutProject() {
         Long id = 1L;
         FurnaceDto inputDto = new FurnaceDto();
         inputDto.setType("NewType");
@@ -203,7 +203,7 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testUpdateFurnace_UpdateWithProject() {
+    void testUpdateFurnace_UpdateWithProject() {
         Long id = 1L;
         FurnaceDto inputDto = new FurnaceDto();
         inputDto.setType("NewType");
@@ -241,13 +241,13 @@ public class FurnaceServiceTest {
     }
 
     @Test
-    public void testDeleteFurnace_NullId() {
+    void testDeleteFurnace_NullId() {
         Exception exception = assertThrows(BadRequestException.class, () -> furnaceService.deleteFurnace(null));
         assertEquals("Furnace id must not be null", exception.getMessage());
     }
 
     @Test
-    public void testDeleteFurnace_Success() {
+    void testDeleteFurnace_Success() {
         Long id = 1L;
         doNothing().when(furnaceRepository).deleteById(id);
         furnaceService.deleteFurnace(id);

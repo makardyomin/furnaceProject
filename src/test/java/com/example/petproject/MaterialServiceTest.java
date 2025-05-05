@@ -22,13 +22,10 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class MaterialServiceTest {
+class MaterialServiceTest {
 
     @Mock
     private MaterialRepository materialRepository;
-
-    @Mock
-    private FurnaceRepository furnaceRepository;
 
     @Mock
     private Cache<List<Material>> cache;

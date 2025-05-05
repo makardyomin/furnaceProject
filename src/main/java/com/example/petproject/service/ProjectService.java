@@ -6,7 +6,6 @@ import com.example.petproject.model.Project;
 import com.example.petproject.repository.ProjectRepository;
 import com.example.petproject.utils.BadRequestException;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class ProjectService {
     public List<ProjectDto> getAllProjects() {
         return projectRepository.findAll().stream()
                 .map(ProjectMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ProjectDto getProjectById(Long id) {

@@ -15,10 +15,12 @@ import jakarta.persistence.ManyToOne;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Furnace {
     @Setter
     @Getter
@@ -55,9 +57,6 @@ public class Furnace {
             inverseJoinColumns = @JoinColumn(name = "material_id")
     )
     private List<Material> materialIds;
-
-    // Constructors, getters, setters
-    public Furnace() {}
 
     public List<Material> getMaterials() {
         return materialIds;

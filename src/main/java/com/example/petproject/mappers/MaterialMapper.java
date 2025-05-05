@@ -6,6 +6,10 @@ import com.example.petproject.model.Material;
 import java.util.stream.Collectors;
 
 public class MaterialMapper {
+    private MaterialMapper() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
     public static MaterialDto toDto(Material material) {
         MaterialDto dto = new MaterialDto();
         dto.setId(material.getId());
