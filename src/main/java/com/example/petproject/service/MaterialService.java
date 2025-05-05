@@ -4,7 +4,6 @@ import com.example.petproject.cache.Cache;
 import com.example.petproject.dto.MaterialDto;
 import com.example.petproject.mappers.MaterialMapper;
 import com.example.petproject.model.Material;
-import com.example.petproject.repository.FurnaceRepository;
 import com.example.petproject.repository.MaterialRepository;
 import com.example.petproject.utils.BadRequestException;
 import java.util.List;
@@ -13,18 +12,12 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class MaterialService {
-    @Autowired
-    private MaterialRepository materialRepository;
-
-    @Autowired
-    private FurnaceRepository furnaceRepository;
-
+    private final MaterialRepository materialRepository;
     private final Cache<List<Material>> cache;
     private final Logger logger = LoggerFactory.getLogger(MaterialService.class);
 

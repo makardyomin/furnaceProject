@@ -5,26 +5,23 @@ import com.example.petproject.mappers.FurnaceMapper;
 import com.example.petproject.model.Furnace;
 import com.example.petproject.model.Project;
 import com.example.petproject.repository.FurnaceRepository;
-import com.example.petproject.repository.MaterialRepository;
 import com.example.petproject.repository.ProjectRepository;
 import com.example.petproject.utils.BadRequestException;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class FurnaceService {
-    @Autowired
     private FurnaceRepository furnaceRepository;
 
-    @Autowired
     private ProjectRepository projectRepository;
-
-    @Autowired
-    private MaterialRepository materialRepository;
 
     public List<FurnaceDto> getAllFurnaces() {
         return furnaceRepository.findAll().stream()

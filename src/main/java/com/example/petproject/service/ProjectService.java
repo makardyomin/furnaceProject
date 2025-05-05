@@ -7,14 +7,14 @@ import com.example.petproject.repository.ProjectRepository;
 import com.example.petproject.utils.BadRequestException;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class ProjectService {
-    @Autowired
     private ProjectRepository projectRepository;
 
     public List<ProjectDto> getAllProjects() {

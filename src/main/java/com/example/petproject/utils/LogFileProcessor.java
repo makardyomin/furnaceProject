@@ -58,6 +58,7 @@ public class LogFileProcessor {
             task.setStatus(LogTaskStatus.SUCCESS);
             task.setFilePath(mergedPath.toString());
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             task.setStatus(LogTaskStatus.FAILED);
             task.setError(e.getMessage());
             log.error("[ASYNC] Ошибка генерации логов по диапазону: {}", e.getMessage());
