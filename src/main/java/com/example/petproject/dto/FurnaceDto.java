@@ -24,13 +24,6 @@ public class FurnaceDto {
     private Long projectId; // ID of the associated project
     private List<Material> materialIds; // List of Material IDs associated with the furnace
 
-    public FurnaceDto(Furnace furnace) {
-        this.id = furnace.getId();
-        this.type = furnace.getType();
-        this.projectId = furnace.getProject().getId();
-        this.materialIds = furnace.getMaterials();
-    }
-
     public List<Material> getMaterialIds() {
         return materialIds;
     }

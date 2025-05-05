@@ -5,7 +5,7 @@ import com.example.petproject.service.FurnaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/furnaces")
 @Tag(name = "Печи", description = "Управление печями")
+@AllArgsConstructor
 public class FurnacesController {
-    @Autowired
     private FurnaceService furnaceService;
 
     @Operation(summary = "Получить список всех печей")

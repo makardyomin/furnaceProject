@@ -5,7 +5,7 @@ import com.example.petproject.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/projects")
 @Tag(name = "Проекты", description = "Управление проектами")
+@AllArgsConstructor
 public class ProjectsController {
-    @Autowired
     private ProjectService projectService;
 
     @Operation(summary = "Получить список всех проектов")

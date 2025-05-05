@@ -35,8 +35,4 @@ public class Material {
     private List<Furnace> furnaces;
 
     public Material() {}
-
-    public Material(String name) {
-        this.name = name;
-    }
 }

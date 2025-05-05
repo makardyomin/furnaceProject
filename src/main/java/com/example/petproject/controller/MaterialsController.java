@@ -5,7 +5,7 @@ import com.example.petproject.service.MaterialService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/materials")
 @Tag(name = "Материалы", description = "Управление материалами")
+@AllArgsConstructor
 public class MaterialsController {
-    @Autowired
     private MaterialService materialService;
 
     @Operation(summary = "Получить список всех материалов")

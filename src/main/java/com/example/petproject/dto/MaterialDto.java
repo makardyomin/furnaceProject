@@ -9,23 +9,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MaterialDto {
-    @Setter
-    @Getter
     private Long id;
 
-    @Setter
-    @Getter
     private String name;
-    @Setter
     private List<Long> furnaceIds;
-    @Setter
-    @Getter
     private String thermalInsulation;
-    @Setter
-    @Getter
     private Long cost;
 
     // Constructor that converts Material to MaterialDTO
@@ -39,9 +32,5 @@ public class MaterialDto {
                 .stream()
                 .map(Furnace::getId) // Get only the ID of each Furnace
                 .collect(Collectors.toList());
-    }
-
-    public List<Long> getFurnaceIds() {
-        return furnaceIds;
     }
 }
