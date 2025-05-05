@@ -9,7 +9,6 @@ import com.example.petproject.dto.MaterialDto;
 import com.example.petproject.mappers.MaterialMapper;
 import com.example.petproject.model.Furnace;
 import com.example.petproject.model.Material;
-import com.example.petproject.repository.FurnaceRepository;
 import com.example.petproject.repository.MaterialRepository;
 import com.example.petproject.service.MaterialService;
 import com.example.petproject.utils.BadRequestException;
