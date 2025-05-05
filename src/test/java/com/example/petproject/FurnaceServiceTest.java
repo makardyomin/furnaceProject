@@ -24,7 +24,7 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FurnaceServiceTest {
+class FurnaceServiceTest {
 
     @Mock
     private FurnaceRepository furnaceRepository;

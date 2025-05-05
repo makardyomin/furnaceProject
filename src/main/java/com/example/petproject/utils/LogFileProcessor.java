@@ -5,7 +5,6 @@ import static java.lang.Thread.sleep;
 import com.example.petproject.dto.LogTask;
 import com.example.petproject.enums.LogTaskStatus;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +29,9 @@ public class LogFileProcessor {
             LocalDate from = LocalDate.parse(fromDate, formatter);
             LocalDate to = LocalDate.parse(toDate, formatter);
 
-            if (from.isAfter(to)) throw new IllegalArgumentException("Неверный диапазон дат");
+            if (from.isAfter(to)) {
+                throw new IllegalArgumentException("Неверный диапазон дат");
+            }
 
             List<Path> logFiles = new ArrayList<>();
             for (LocalDate date = from; !date.isAfter(to); date = date.plusDays(1)) {
@@ -40,20 +41,12 @@ public class LogFileProcessor {
                 }
             }
             sleep(90000);
-            if (logFiles.isEmpty()) throw new RuntimeException("Логи за период не найдены");
+            if (logFiles.isEmpty()) {
+                throw new NotFoundException("Логи за период не найдены");
+            }
 
             Path mergedPath = Paths.get("logs/generated-log-" + taskId + ".log");
-            try (BufferedWriter writer = Files.newBufferedWriter(mergedPath)) {
-                for (Path path : logFiles) {
-                    List<String> lines = Files.readAllLines(path);
-                    for (String line : lines) {
-                        writer.write(line);
-                        writer.newLine();
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            mergeLogFiles(mergedPath, logFiles);
 
             task.setStatus(LogTaskStatus.SUCCESS);
             task.setFilePath(mergedPath.toString());
@@ -62,6 +55,20 @@ public class LogFileProcessor {
             task.setStatus(LogTaskStatus.FAILED);
             task.setError(e.getMessage());
             log.error("[ASYNC] Ошибка генерации логов по диапазону: {}", e.getMessage());
+        }
+    }
+
+    private void mergeLogFiles(Path mergedPath, List<Path> logFiles) throws InterruptedException {
+        try (BufferedWriter writer = Files.newBufferedWriter(mergedPath)) {
+            for (Path path : logFiles) {
+                List<String> lines = Files.readAllLines(path);
+                for (String line : lines) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            throw new InterruptedException();
         }
     }
 }

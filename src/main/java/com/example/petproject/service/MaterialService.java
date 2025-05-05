@@ -6,6 +6,7 @@ import com.example.petproject.mappers.MaterialMapper;
 import com.example.petproject.model.Material;
 import com.example.petproject.repository.MaterialRepository;
 import com.example.petproject.utils.BadRequestException;
+import com.example.petproject.utils.NotFoundException;
 import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class MaterialService {
     private final MaterialRepository materialRepository;
     private final Cache<List<Material>> cache;
     private final Logger logger = LoggerFactory.getLogger(MaterialService.class);
+    String exceptionMessage = "Material not found with id";
 
     public MaterialService(MaterialRepository materialRepository,
                            Cache<List<Material>> cache) {
@@ -40,7 +42,7 @@ public class MaterialService {
         logger.info("Finding material by id");
         return materialRepository.findById(id)
                 .map(MaterialMapper::toDto)
-                .orElseThrow(() -> new RuntimeException("Material not found with id " + id));
+                .orElseThrow(() -> new NotFoundException(exceptionMessage + id));
     }
 
     public List<MaterialDto> findByFurnaceType(String type) {
@@ -56,7 +58,7 @@ public class MaterialService {
 
         materials = materialRepository.findByFurnaceType(type);
         if (materials == null || materials.isEmpty()) {
-            throw new RuntimeException("Material not found with type " + type);
+            throw new NotFoundException("Material not found with type " + type);
         }
 
         for (Material material : materials) {
@@ -105,7 +107,7 @@ public class MaterialService {
         }
         logger.info("Updating material with id {}", id);
         Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Material not found with id " + id));
+                .orElseThrow(() -> new NotFoundException(exceptionMessage + id));
 
         material.setName(materialDto.getName());
         material.setThermalInsulation(materialDto.getThermalInsulation());
@@ -113,7 +115,7 @@ public class MaterialService {
 
         Set<String> cacheKeys = cache.getKeys(id);
         Material oldMaterial = materialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Material not found with id " + id));
+                .orElseThrow(() -> new NotFoundException(exceptionMessage + id));
         if (cacheKeys != null) {
             for (String cacheKey : cacheKeys) {
                 List<Material> materials = cache.get(cacheKey);
@@ -131,7 +133,7 @@ public class MaterialService {
         }
         logger.info("Deleting material with id {}", id);
         Material material = materialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Material not found with id " + id));
+                .orElseThrow(() -> new NotFoundException(exceptionMessage + id));
         material.getFurnaces().forEach(furnace -> furnace.getMaterials().remove(material));
         materialRepository.deleteById(id);
         cache.remove(id);
