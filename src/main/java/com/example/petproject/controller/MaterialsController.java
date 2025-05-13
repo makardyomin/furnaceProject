@@ -52,9 +52,7 @@ public class MaterialsController {
     @Operation(summary = "Создать список материалов (bulk-операция)")
     @PostMapping("/bulk")
     public List<MaterialDto> createMaterials(@RequestBody List<MaterialDto> materialDtos) {
-        return materialDtos.stream()
-                .map(materialService::createMaterial)
-                .toList();
+        return materialService.createMaterials(materialDtos);
     }
 
     @Operation(summary = "Обновить материал по id")

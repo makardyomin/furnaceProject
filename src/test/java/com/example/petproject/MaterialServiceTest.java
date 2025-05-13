@@ -377,4 +377,110 @@ class MaterialServiceTest {
         verify(materialRepository, times(1)).deleteById(id);
         verify(cache, times(1)).remove(id);
     }
+
+    @Test
+    void testCreateMaterials_NullList() {
+        BadRequestException ex = assertThrows(BadRequestException.class,
+                () -> materialService.createMaterials(null));
+        assertEquals("Material list must not be null", ex.getMessage());
+    }
+
+    @Test
+    void testCreateMaterials_EmptyList() {
+        List<MaterialDto> result = materialService.createMaterials(Collections.emptyList());
+        assertTrue(result.isEmpty(), "An empty list should be returned when no input is provided");
+    }
+
+    @Test
+    void testCreateMaterials_InvalidMaterial_NullDto() {
+        List<MaterialDto> dtos = Collections.singletonList((MaterialDto) null);
+        BadRequestException ex = assertThrows(BadRequestException.class,
+                () -> materialService.createMaterials(dtos));
+        assertEquals("Material data must not be null", ex.getMessage());
+    }
+
+    @Test
+    void testCreateMaterials_InvalidMaterial_NullName() {
+        MaterialDto dto = new MaterialDto();
+        dto.setName(null);
+        dto.setCost(10L);
+        dto.setThermalInsulation("Good");
+        List<MaterialDto> dtos = List.of(dto);
+        BadRequestException ex = assertThrows(BadRequestException.class,
+                () -> materialService.createMaterials(dtos));
+        assertEquals("Material name must not be null or empty", ex.getMessage());
+    }
+
+    @Test
+    void testCreateMaterials_InvalidMaterial_EmptyThermalInsulation() {
+        MaterialDto dto = new MaterialDto();
+        dto.setName("Material A");
+        dto.setCost(10L);
+        dto.setThermalInsulation("");
+        List<MaterialDto> dtos = List.of(dto);
+        BadRequestException ex = assertThrows(BadRequestException.class,
+                () -> materialService.createMaterials(dtos));
+        assertEquals("Material type of thermal insulation must not be null or empty", ex.getMessage());
+    }
+
+    @Test
+    void testCreateMaterials_ValidList() {
+        // Prepare two valid MaterialDto objects
+        MaterialDto dto1 = new MaterialDto();
+        dto1.setName("Material A");
+        dto1.setCost(10L);
+        dto1.setThermalInsulation("Good");
+
+        MaterialDto dto2 = new MaterialDto();
+        dto2.setName("Material B");
+        dto2.setCost(20L);
+        dto2.setThermalInsulation("Excellent");
+
+        List<MaterialDto> dtos = Arrays.asList(dto1, dto2);
+
+        // Create corresponding Material entities (simulate the mapping result)
+        Material material1 = new Material();
+        material1.setName(dto1.getName());
+        material1.setCost(dto1.getCost());
+        material1.setThermalInsulation(dto1.getThermalInsulation());
+        Material material2 = new Material();
+        material2.setName(dto2.getName());
+        material2.setCost(dto2.getCost());
+        material2.setThermalInsulation(dto2.getThermalInsulation());
+
+        // Prepare what should be returned after mapping back to DTOs.
+        MaterialDto savedDto1 = new MaterialDto();
+        savedDto1.setName(material1.getName());
+        savedDto1.setCost(material1.getCost());
+        savedDto1.setThermalInsulation(material1.getThermalInsulation());
+        MaterialDto savedDto2 = new MaterialDto();
+        savedDto2.setName(material2.getName());
+        savedDto2.setCost(material2.getCost());
+        savedDto2.setThermalInsulation(material2.getThermalInsulation());
+
+        // Use Mockito static mocking for MaterialMapper
+        try (MockedStatic<MaterialMapper> mockedMapper = mockStatic(MaterialMapper.class)) {
+            // Configure the mapper: from DTO to entity.
+            mockedMapper.when(() -> MaterialMapper.toEntity(dto1)).thenReturn(material1);
+            mockedMapper.when(() -> MaterialMapper.toEntity(dto2)).thenReturn(material2);
+            // Configure the mapper: from entity to DTO.
+            mockedMapper.when(() -> MaterialMapper.toDto(material1)).thenReturn(savedDto1);
+            mockedMapper.when(() -> MaterialMapper.toDto(material2)).thenReturn(savedDto2);
+
+            // Mock the repository’s bulk operation.
+            when(materialRepository.saveAll(anyList()))
+                    .thenReturn(Arrays.asList(material1, material2));
+
+            // Execute the bulk creation.
+            List<MaterialDto> result = materialService.createMaterials(dtos);
+
+            // Validate that the results are as expected.
+            assertEquals(2, result.size(), "Result list must contain two items");
+            assertEquals(savedDto1.getName(), result.get(0).getName(), "First material name should match");
+            assertEquals(savedDto2.getName(), result.get(1).getName(), "Second material name should match");
+
+            // Verify that the repository was called exactly once.
+            verify(materialRepository, times(1)).saveAll(anyList());
+        }
+    }
 }

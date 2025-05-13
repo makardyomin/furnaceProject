@@ -7,8 +7,10 @@ import com.example.petproject.model.Material;
 import com.example.petproject.repository.MaterialRepository;
 import com.example.petproject.utils.BadRequestException;
 import com.example.petproject.utils.NotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,6 +139,43 @@ public class MaterialService {
         material.getFurnaces().forEach(furnace -> furnace.getMaterials().remove(material));
         materialRepository.deleteById(id);
         cache.remove(id);
+    }
+
+    public List<MaterialDto> createMaterials(List<MaterialDto> materialDtos) {
+        if (materialDtos == null) {
+            throw new BadRequestException("Material list must not be null");
+        }
+        if (materialDtos.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // Validate and convert DTOs to entities.
+        List<Material> materialsToSave = materialDtos.stream().map(materialDto -> {
+            if (materialDto == null) {
+                throw new BadRequestException("Material data must not be null");
+            }
+            if (materialDto.getName() == null || materialDto.getName().isEmpty()) {
+                throw new BadRequestException("Material name must not be null or empty");
+            }
+            if (materialDto.getCost() == null) {
+                throw new BadRequestException("Material cost must not be null");
+            }
+            if (materialDto.getThermalInsulation() == null || materialDto.getThermalInsulation().isEmpty()) {
+                throw new BadRequestException(
+                        "Material type of thermal insulation must not be null or empty");
+            }
+            return MaterialMapper.toEntity(materialDto);
+        }).collect(Collectors.toList());
+
+        logger.info("Creating {} materials in bulk", materialsToSave.size());
+
+        // Bulk save using saveAll()
+        List<Material> savedMaterials = materialRepository.saveAll(materialsToSave);
+
+        // Convert saved entities back to DTOs.
+        return savedMaterials.stream()
+                .map(MaterialMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
 
