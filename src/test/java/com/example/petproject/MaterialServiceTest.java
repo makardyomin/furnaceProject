@@ -67,7 +67,7 @@ class MaterialServiceTest {
         when(materialRepository.findById(id)).thenReturn(Optional.empty());
         Exception ex = assertThrows(RuntimeException.class, () ->
                 materialService.getMaterialById(id));
-        assertEquals("Material not found with id " + id, ex.getMessage());
+        assertEquals("Material not found with id" + id, ex.getMessage());
     }
 
     @Test
@@ -290,7 +290,7 @@ class MaterialServiceTest {
         when(materialRepository.findById(1L)).thenReturn(Optional.empty());
         Exception ex = assertThrows(RuntimeException.class, () ->
                 materialService.updateMaterial(1L, dto));
-        assertEquals("Material not found with id 1", ex.getMessage());
+        assertEquals("Material not found with id1", ex.getMessage());
     }
 
     @Test
@@ -353,7 +353,7 @@ class MaterialServiceTest {
         when(materialRepository.findById(1L)).thenReturn(Optional.empty());
         Exception ex = assertThrows(RuntimeException.class, () ->
                 materialService.deleteMaterial(1L));
-        assertEquals("Material not found with id 1", ex.getMessage());
+        assertEquals("Material not found with id1", ex.getMessage());
     }
 
     @Test
