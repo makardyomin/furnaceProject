@@ -10,7 +10,6 @@ import com.example.petproject.utils.NotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,7 +163,7 @@ public class MaterialService {
                         "Material type of thermal insulation must not be null or empty");
             }
             return MaterialMapper.toEntity(materialDto);
-        }).collect(Collectors.toList());
+        }).toList();
 
         logger.info("Creating {} materials in bulk", materialsToSave.size());
 
@@ -173,7 +172,7 @@ public class MaterialService {
 
         return savedMaterials.stream()
                 .map(MaterialMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
 
