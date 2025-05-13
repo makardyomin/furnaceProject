@@ -9,17 +9,17 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class VisitCounterServiceTest {
+class VisitCounterServiceTest {
 
     private VisitCounterService visitCounterService;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         visitCounterService = new VisitCounterService();
     }
 
     @Test
-    public void testIncrementSingleUri() {
+    void testIncrementSingleUri() {
         String uri = "/home";
         // Before any increments, count should be 0.
         assertEquals(0, visitCounterService.getCount(uri), "Initial count for an unknown URI should be 0");
@@ -32,14 +32,14 @@ public class VisitCounterServiceTest {
     }
 
     @Test
-    public void testGetCountForNonExistingUri() {
+    void testGetCountForNonExistingUri() {
         String uri = "/non-existing";
         // The count for a non-existing URI should be 0.
         assertEquals(0, visitCounterService.getCount(uri), "Non-existing URI count should be 0");
     }
 
     @Test
-    public void testGetAllCounts() {
+    void testGetAllCounts() {
         String uri1 = "/home";
         String uri2 = "/about";
         // Increment counts for different URIs.
@@ -56,7 +56,7 @@ public class VisitCounterServiceTest {
     }
 
     @Test
-    public void testReset() {
+    void testReset() {
         String uri = "/home";
         visitCounterService.increment(uri);
         // Verify count is non-zero after an increment.
@@ -71,7 +71,7 @@ public class VisitCounterServiceTest {
     }
 
     @Test
-    public void testConcurrentIncrement() throws InterruptedException {
+    void testConcurrentIncrement() throws InterruptedException {
         String uri = "/concurrent";
         int numberOfThreads = 10;
         int incrementsPerThread = 100;
