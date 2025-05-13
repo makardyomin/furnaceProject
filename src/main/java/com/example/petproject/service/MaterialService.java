@@ -149,7 +149,6 @@ public class MaterialService {
             return Collections.emptyList();
         }
 
-        // Validate and convert DTOs to entities.
         List<Material> materialsToSave = materialDtos.stream().map(materialDto -> {
             if (materialDto == null) {
                 throw new BadRequestException("Material data must not be null");
@@ -172,7 +171,6 @@ public class MaterialService {
         // Bulk save using saveAll()
         List<Material> savedMaterials = materialRepository.saveAll(materialsToSave);
 
-        // Convert saved entities back to DTOs.
         return savedMaterials.stream()
                 .map(MaterialMapper::toDto)
                 .collect(Collectors.toList());
