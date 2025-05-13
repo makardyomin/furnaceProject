@@ -1,6 +1,7 @@
 package com.example.petproject.utils;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import jakarta.validation.ValidationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -29,8 +30,8 @@ public class GlobalExceptionsHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleCustomValidation(NotFoundException ex) {
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Map<String, String>> handleCustomValidation(ValidationException ex) {
         return ResponseEntity.badRequest().body(Map.of(ERROR_MSG, ex.getMessage()));
     }
 
